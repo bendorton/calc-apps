@@ -47,7 +47,7 @@ func (this *Handler) Handle(args []string) error {
 }
 
 var (
-	errWrongNumberOfArgs = errors.New("usage: calc <a> <b>")
+	errWrongNumberOfArgs = errors.New("usage: calc -op '<+,-,*,/' <a> <b>")
 	errInvalidArg        = errors.New("invalid argument")
 	errWriterFailure     = errors.New("writer failure")
 )

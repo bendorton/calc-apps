@@ -32,7 +32,7 @@ func TestHandler_InvalidSecondArg(t *testing.T) {
 }
 func TestHandler_OutputWriterError(t *testing.T) {
 	ugh := errors.New("ugh")
-	handler := NewHandler(&ErringWriter{err: ugh}, nil)
+	handler := NewHandler(&ErringWriter{err: ugh}, &calc.Addition{})
 	err := handler.Handle([]string{"1", "1"})
 	assertError(t, err, ugh)
 	assertError(t, err, errWriterFailure)
