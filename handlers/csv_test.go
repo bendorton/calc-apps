@@ -8,6 +8,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/bendorton/calc-apps/external/should"
 	"github.com/bendorton/calc-lib"
 )
 
@@ -37,7 +38,7 @@ func TestCSVHandler(t *testing.T) {
 
 	err := handler.Handle()
 
-	assertError(t, err, nil)
+	should.So(t, err, should.BeNil)
 	if outputBuffer.String() != csvOutput {
 		t.Errorf("got %q want %q", outputBuffer.String(), csvOutput)
 	}
@@ -55,7 +56,7 @@ func TestCSVHandler_WriteError(t *testing.T) {
 
 	err := handler.Handle()
 
-	assertError(t, err, ugh)
+	should.So(t, err, should.WrapError, ugh)
 }
 
 func TestCSVHandler_ReadError(t *testing.T) {
@@ -68,7 +69,7 @@ func TestCSVHandler_ReadError(t *testing.T) {
 
 	err := handler.Handle()
 
-	assertError(t, err, ugh)
+	should.So(t, err, should.WrapError, ugh)
 }
 
 type ErringReader struct {

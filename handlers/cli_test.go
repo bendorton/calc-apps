@@ -9,16 +9,10 @@ import (
 	"github.com/bendorton/calc-lib"
 )
 
-func assertError(t *testing.T, actual, target error) {
-	t.Helper()
-	if !errors.Is(actual, target) {
-		t.Errorf("expected %v, got %v", target, actual)
-	}
-}
 func TestHandler_WrongNumberOfArgs(t *testing.T) {
 	handler := NewHandler(nil, nil)
 	err := handler.Handle(nil)
-	should.So(t, err, should.WrapError, should.WrapError, errWrongNumberOfArgs)
+	should.So(t, err, should.WrapError, errWrongNumberOfArgs)
 }
 func TestHandler_InvalidFirstArg(t *testing.T) {
 	handler := NewHandler(nil, nil)
