@@ -5,8 +5,9 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"net/http/httputil"
-	"reflect"
 	"testing"
+
+	"github.com/bendorton/calc-apps/external/should"
 )
 
 func TestHTTPServer_NotFound(t *testing.T) {
@@ -39,12 +40,6 @@ func TestHTTPServer_Divide(t *testing.T) {
 	assertHTTP(t, http.MethodGet, "/divide?a=1&b=NaN", http.StatusUnprocessableEntity, "text/plain; charset=utf-8", "Invalid argument b\n")
 }
 
-func assertEqual(t *testing.T, expected, actual any) {
-	t.Helper()
-	if !reflect.DeepEqual(expected, actual) {
-		t.Errorf("got: [%v], want: [%v]", actual, expected)
-	}
-}
 func assertHTTP(t *testing.T, method, target string, expectedStatus int, expectedContentType, expectedResponse string) {
 	t.Run(fmt.Sprintf("%s %s", method, target), func(t *testing.T) {
 		request := httptest.NewRequest(method, target, nil)
@@ -58,8 +53,8 @@ func assertHTTP(t *testing.T, method, target string, expectedStatus int, expecte
 		dumpResponse, _ := httputil.DumpResponse(response.Result(), true)
 		t.Log("\n" + string(dumpResponse))
 
-		assertEqual(t, expectedStatus, response.Code)
-		assertEqual(t, expectedContentType, response.Header().Get("Content-Type"))
-		assertEqual(t, expectedResponse, response.Body.String())
+		should.So(t, expectedStatus, should.Equal, response.Code)
+		should.So(t, expectedContentType, should.Equal, response.Header().Get("Content-Type"))
+		should.So(t, expectedResponse, should.Equal, response.Body.String())
 	})
 }
